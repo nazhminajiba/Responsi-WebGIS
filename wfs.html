@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaflet Map</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- Marker Cluster -->
+  <link rel="stylesheet" href="assets/plugins/leaflet-markercluster/MarkerCluster.css" />
+  <link rel="stylesheet" href="assets/plugins/leaflet-markercluster/MarkerCluster.Default.css" />
+  <!-- Routing -->
+  <link rel="stylesheet" href="assets/plugins/leaflet-routing/leaflet-routing-machine.css" />
+  <!-- Search CSS Library -->
+  <link rel="stylesheet" href="assets/plugins/leaflet-search/leaflet-search.css" />
+  <!-- Geolocation CSS Library for Plugin -->
+  <link rel="stylesheet"
+    href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css" />
+  <!-- Leaflet Mouse Position CSS Library -->
+  <link rel="stylesheet" href="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.css" />
+  <!-- Leaflet Measure CSS Library -->
+  <link rel="stylesheet" href="assets/plugins/leaflet-measure/leaflet-measure.css" />
+  <!-- EasyPrint CSS Library -->
+  <link rel="stylesheet" href="assets/plugins/leaflet-easyprint/easyPrint.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.42.0/apexcharts.min.css"
+        integrity="sha512-nnNXPeQKvNOEUd+TrFbofWwHT0ezcZiFU5E/Lv2+JlZCQwQ/ACM33FxPoQ6ZEFNnERrTho8lF0MCEH9DBZ/wWw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript (Popper.js included as a dependency) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    #map {
+      height: 140vh;
+    }
+
+    .info {
+      padding: 6px 8px;
+      font: 14px/16px Arial, Helvetica, sans-serif;
+      background: white;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .info h2 {
+      margin: 0 0 5px;
+      color: #777;
+    }
+
+    .navbar-brand {
+      font-size: 3em;
+      /* Ubah ukuran teks sesuai dengan keinginan Anda */
+      display: block;
+      /* Ubah display menjadi block agar dapat diatur posisinya */
+      width: 100%;
+      /* Lebar penuh untuk memudahkan penempatan ke tengah */
+      text-align: center;
+      /* Atur teks menjadi di tengah */
+    }
+
+    /* CSS untuk tabel dan sel */
+    table {
+      border-collapse: collapse;
+      /* Menggabungkan garis antara sel */
+      width: 100%;
+      text-align: center;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      /* Menambahkan garis untuk sel */
+      padding: 8px;
+      /* Padding untuk sel */
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      /* Warna latar belakang untuk sel header */
+      text-align: center;
+    }
+
+    .col-auto:last-child .fa-book {
+      color: #f39c12;
+      /* Change to your desired color */
+    }
+
+    .bg-dark-custom {
+      background-color: #415869;
+      /* Ganti dengan warna yang Anda inginkan */
+    }
+
+    .text-custom {
+      color: #ffffff;
+      /* Ganti dengan warna teks yang cocok dengan latar belakang */
+    }
+
+    .navbar-nav .nav-link:hover {
+      background-color: #f8f9fa;
+      /* Ganti dengan warna yang diinginkan */
+      transition: background-color 0.3s ease;
+      /* Efek transisi saat mengarahkan kursor ke tautan */
+    }
+  </style>
+</head>
+<body>
+
+    
+
+  <!-- Isi konten Anda -->
+  
+  
+
+<!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <a class="navbar-brand" href="#"><i class="fas fa-book mx-2"></i>FASILITAS PENDIDIKAN (SMA & SMK)</a>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+              
+              <li class="nav-item active">
+                <a class="nav-link" href="informasi.html">Infografis<span class="sr-only">(current)</span></a>
+                <li class="nav-item active">
+                  <a class="nav-link" aria-disabled="true" data-bs-toggle="modal" data-bs-target="#infoModal">
+                      <i class=></i> Info
+                  </a>
+              </li>
+              
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="card-body">
+      <div id="chart"></div>
+  </div>
+</div>
+</div>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-circle-info"></i>Info</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <p>Sumber Data: <a href="https://sekolah.data.kemdikbud.go.id"
+                          target="_blank">https://sekolah.data.kemdikbud.go.id</a></p>
+              </div>
+              <div class="modal-body">
+                <p>Data: <a href="mysql.php"
+                        target="_blank">Koordinat</a></p>
+            </div>
+            <div class="modal-body">
+              <p>Data: <a href="mysql2.php"
+                      target="_blank">Jumlah</a></p>
+          </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+              
+          </div>
+      </div>
+  </div>
+
+
+
+  <div id="map"></div>
+
+  
+
+  
+
+   <!-- Include your GeoJSON data -->
+   <script src="./data2.js"></script>
+
+   <!-- Leaflet and Plugins -->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+   <script src="assets/plugins/leaflet-markercluster/leaflet.markercluster.js"></script>
+   <script src="assets/plugins/leaflet-markercluster/leaflet.markercluster-src.js"></script>
+   <script src="assets/plugins/leaflet-routing/leaflet-routing-machine.js"></script>
+   <script src="assets/plugins/leaflet-routing/leaflet-routing-machine.min.js"></script>
+   <script src="assets/plugins/leaflet-search/leaflet-search.js"></script>
+   <script
+     src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+   <script src="assets/plugins/leaflet-mouseposition/L.Control.MousePosition.js"></script>
+   <script src="assets/plugins/leaflet-measure/leaflet-measure.js"></script>
+   <script src="assets/plugins/leaflet-easyprint/leaflet.easyPrint.js"></script>
+
+   <script>
+     // Initialize variables
+     var wfsgeoserver1 = L.geoJson(null, {
+       pointToLayer: function (feature, latlng) {
+         return L.marker(latlng);
+       },
+       onEachFeature: function (feature, layer) {
+         var content =
+           "kecamatan: " +
+           feature.properties.kecamatan +
+           "<br>" +
+           "jumlah penduduk: " +
+           feature.properties.jumlah +
+           "<br>";
+
+         layer.on({
+           click: function (e) {
+             wfsgeoserver1.bindPopup(content).openPopup();
+           },
+           mouseover: function (e) {
+             wfsgeoserver1
+               .bindTooltip(feature.properties.kecamatan)
+               .openTooltip();
+           },
+           mouseout: function (e) {
+             wfsgeoserver1.closePopup();
+             wfsgeoserver1.closeTooltip();
+           },
+         });
+       },
+     });
+
+     $.getJSON("geoserver1.php", function (data) {
+       wfsgeoserver1.addData(data);
+       wfsgeoserver1.addTo(map);
+       map.fitBounds(wfsgeoserver1.getBounds());
+     });
+
+     // Initialize the map
+     var map = L.map("map").setView([-7.7956, 110.3695], 10);
+
+    //  // Array of markers
+     var markersArray = [
+       {
+         coordinates: [-7.766715, 110.37746],
+         options: { draggable: true },
+         popupContent: "Gedung B DIVSIG UGM",
+       },
+       {
+         coordinates: [-7.743168, 110.350276],
+         options: {},
+         popupContent: "RS.Akademik UGM",
+       },
+     ]
+
+     // Add GeoJSON data to the map
+     // L.geoJson(data).addTo(map);
+
+     // // Title
+     // var title = new L.Control();
+     // title.onAdd = function (map) {
+     //   this._div = L.DomUtil.create("div", "info");
+     //   this.update();
+     //   return this._div;
+     // };
+     // title.update = function () {
+     //   this._div.innerHTML =
+     //     "<h2>LATIHAN WEBGIS | FASILITAS PENDIDIKAN KAB. SLEMAN</h2>MATAKULIAH PEMROGRAMAN SPASIAL : WEB";
+
+     // };
+     // title.addTo(map);
+
+
+
+     // Watermark
+     L.Control.Watermark = L.Control.extend({
+       onAdd: function (map) {
+         var img = L.DomUtil.create("img");
+         img.src = "assets/img/logo/LOGO_SIG_BLUE.png";
+         img.style.width = "120px";
+         return img;
+       },
+     });
+     L.control.watermark = function (opts) {
+       return new L.Control.Watermark(opts);
+     };
+
+     L.control.watermark({ position: "bottomleft" }).addTo(map);
+
+     // Legend
+     L.Control.Legend = L.Control.extend({
+  onAdd: function (map) {
+    var img = L.DomUtil.create("img");
+    img.src = "assets/legenda2.png";
+    img.style.width = "250px"; // Mengubah lebar gambar menjadi 150px (ukuran yang lebih kecil)
+    return img;
+  },
+});
+
+L.control.Legend = function (opts) {
+  return new L.Control.Legend(opts);
+};
+
+L.control.Legend({ position: "bottomleft" }).addTo(map);
+
+     
+     
+
+
+     // Basemaps
+     var basemap1 = L.tileLayer(
+       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+       {
+         maxZoom: 19,
+         attribution:
+           'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+       }
+     );
+
+     var basemap2 = L.tileLayer(
+       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+       {
+         attribution:
+           'Tiles &copy; Esri | <a href="DIVSIGUGM" target="_blank">DIVSIG UGM</a>',
+       }
+     );
+
+     var basemap3 = L.tileLayer(
+       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+       {
+         attribution:
+           'Tiles &copy; Esri | <a href="Lathan WebGIS" target="_blank">DIVSIG UGM</a>',
+       }
+     );
+
+     var basemap4 = L.tileLayer(
+       "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+       {
+         attribution:
+           '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+       }
+     );
+
+     basemap4.addTo(map);
+
+     var baseMaps = {
+       OpenStreetMap: basemap1,
+       "Esri World Street": basemap2,
+       "Esri Imagery": basemap3,
+       "Stadia Dark Mode": basemap4,
+     };
+     
+     
+
+     // Function to get color based on kecamatan
+     function getColor(value) {
+    switch (value) {
+        case "Depok":
+            return "#ff6666";
+        case "Ngaglik":
+            return "#ffcc66";
+        case "Mlati":
+            return "#66ff66";
+        case "Gamping":
+            return "#6666ff";
+        case "Kalasan":
+            return "#cc66ff";
+        case "Sleman":
+            return "#ff66cc";
+        case "Godean":
+            return "#66ccff";
+        case "Prambanan":
+            return "#ccff66";
+        case "Ngemplak":
+            return "#ff9966";
+        case "Tempel":
+            return "#9966ff";
+        case "Pakem":
+            return "#66ffcc";
+        case "Berbah":
+            return "#ffcc99";
+        case "Cangkringan":
+            return "#99ffcc";
+        case "Turi":
+            return "#cc99ff";
+        case "Minggir":
+            return "#ff9999";
+        case "Moyudan":
+            return "#99ff99";
+        default:
+            return "#fad028"; // Warna default untuk nilai yang tidak dikenali
+    }
+}
+
+
+      // create GeoJSON layer for polygon data
+      var kecamatanLayer = L.geoJson(data, {
+        style: function (feature) {
+          return {
+            fillColor: getColor(feature.properties.KECAMATAN),
+            weight: 2,
+            opacity: 1,
+            color: "white",
+            dashArray: "3",
+            fillOpacity: 0.7,
+          };
+        },
+        onEachFeature: function (feature, layer) {
+          var content =
+            "Kecamatan: " +
+            feature.properties.KECAMATAN +
+            "<br>" +
+            "Kode Kecamatan: " +
+            feature.properties.KODE_KEC +
+            "<br>";
+
+          layer.bindPopup(content);
+          layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+          });
+        },
+      }).addTo(map);
+
+      function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+          weight: 5,
+          color: "#666",
+          dashArray: "",
+          fillOpacity: 0.7,
+        });
+
+        layer.bringToFront();
+      }
+
+      function resetHighlight(e) {
+        kecamatanLayer.resetStyle(e.target);
+      }
+
+     L.control.layers(baseMaps).addTo(map);
+
+     // Plugin Search
+     var searchControl = new L.Control.Search({
+       position: "topleft",
+       layer: wfsgeoserver1, // Nama variabel layer
+       propertyName: "KECAMATAN", // Field untuk pencarian
+       marker: false,
+       moveToLocation: function (latlng, title, map) {
+         var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+         map.setView(latlng, zoom);
+       },
+     });
+
+     searchControl
+       .on("search:locationfound", function (e) {
+         e.layer.setStyle({
+           fillColor: "#ffff00",
+           color: "#0000ff",
+         });
+       })
+       .on("search:collapse", function (e) {
+         wfsgeoserver1.eachLayer(function (layer) {
+           wfsgeoserver1.resetStyle(layer);
+         });
+       });
+
+     map.addControl(searchControl);
+
+     // Plugin Geolocation
+     var locateControl = L.control
+        .locate({
+          position: "topleft",
+          drawCircle: true,
+          follow: true,
+          setView: true,
+          keepCurrentZoomLevel: false,
+          markerStyle: {
+            weight: 1,
+            opacity: 0.8,
+            fillOpacity: 0.8,
+          },
+          circleStyle: {
+            weight: 1,
+            clickable: false,
+          },
+          icon: "fas fa-crosshairs",
+          metric: true,
+          strings: {
+            title: "Click for Your Location",
+            popup: "You're here. Accuracy {distance} {unit}",
+            outsideMapBoundsMsg: "Not available",
+          },
+          locateOptions: {
+            maxZoom: 16,
+            watch: true,
+            enableHighAccuracy: true,
+            maximumAge: 10000,
+            timeout: 10000,
+          },
+        })
+        .addTo(map);
+
+     // Plugin Mouse Position Coordinate
+     L.control
+       .mousePosition({
+         position: "bottomright",
+         separator: ",",
+         prefix: "Point Coodinate: ",
+       })
+       .addTo(map);
+
+     // Plugin Measurement Tool
+     var measureControl = new L.Control.Measure({
+       position: "topleft",
+       primaryLengthUnit: "meters",
+       secondaryLengthUnit: "kilometers",
+       primaryAreaUnit: "hectares",
+       secondaryAreaUnit: "sqmeters",
+       activeColor: "#FF0000",
+       completedColor: "#00FF00",
+     });
+
+     measureControl.addTo(map);
+
+     // Plugin EasyPrint
+     L.easyPrint({
+       title: "Print",
+     }).addTo(map);
+
+     // Plugin Routing
+     L.Routing.control({
+       waypoints: [
+         L.latLng(-7.774876989477508, 110.3746770621709),
+         L.latLng(-7.789865101510259, 110.37792578946565),
+       ],
+       routeWhileDragging: true,
+     }).addTo(map);
+
+     // Create a marker cluster group
+     var markers = L.markerClusterGroup();
+
+     // Add markers to the cluster group
+     markersArray.forEach(function (markerInfo) {
+       var marker = L.marker(markerInfo.coordinates, markerInfo.options);
+       marker.addTo(markers);
+       marker.bindPopup(markerInfo.popupContent);
+     });
+
+     // Layer Marker
+     var addressPoints = [
+       [-7.645059305354647, 110.33246034515, "SMA Ma'arif 1 Sleman"],
+       [-7.662332296790602, 110.30990679474091, "SMA N 1 Tempel"],
+       [-7.649655391909759, 110.36805593706995, "SMA N 1 Turi"],
+       [-7.649480308264182, 110.43359827213823, "SMA N 1 Cangkringan"],
+       [-7.658252295857999, 110.42208242357623, "SMA N 1 Pakem"],
+       [-7.663543234208028, 110.41757030823486, "SMA Islam 3 Sleman"],
+       [-7.659983045903079, 110.41760165494998, "SMA Muhammadiyah Pakem"],
+       [-7.665720183308359, 110.46261912542381, "SMA Sunan Kalijogo"],
+       [-7.687031608781215, 110.38846792542422, "SMA N 1 Ngaglik"],
+       [-7.681426311788614, 110.33877065598689, "SMA N 1 Sleman"],
+       [-7.693816433616742, 110.34377682611726, "SMA Muhammadiyah 1 Sleman"],
+       [-7.70298975984645, 110.34965923707085, "SMA and SMK Sulaiman Sleman"],
+       [-7.701928187319957, 110.37246980823545, "SMA N 2 Sleman"],
+       [-7.704763452824751, 110.43488126590627, "SMA N 2 Ngaglik"],
+       [-7.700113001403967, 110.46048741447142, "SMA N 1 Ngemplak"],
+       [-7.699616089747505, 110.46388719474156, "SMA IKIP Veteran"],
+       [-7.70745951798359, 110.30832448124765, "SMA N 1 Seyegan"],
+       [-7.732976592037522, 110.32886926590666, "SMA N 1 Mlati"],
+       [-7.718305286142743, 110.33760546590645, "SMA Santo Mikael Mlati"],
+       [-7.745306256591086, 110.23375448673447, "SMA N 1 Minggir"],
+       [-7.764785700274291, 110.23013926405974, "SMAIT Terpadu Bina Umat"],
+       [-7.771963047200883, 110.3064888100841, "SMA N 1 Godean"],
+       [-7.786430107188985, 110.33468386700494, "SMA N 1 Gamping"],
+       [-7.766477835956663, 110.3638377235779, "SMA Budi Utama"],
+       [-7.738078903415563, 110.38318998563898, "SMA Insan Mulia Boarding School"],
+       [-7.745611528067266, 110.36125870823622, "SMA Muhammadiyah Mlati"],
+       [-7.759581233346786, 110.36615348309608, "SMA DR Wahidin Mlati"],
+       [-7.750766722458227, 110.37506162357772, "SMA Islam Al-Azhar 9 Yogyakarta"],
+       [-7.73931518547321, 110.4325561509437, "SMA Budi Mulia Dua"],
+       [-7.759521902764101, 110.38907078128565, "SMA Sahabatqu"],
+       [-7.77142800272427, 110.38855579718843, "SMA GAMA Depok"],
+       [-7.778101999388394, 110.3910789910477, "SMA Kolombo Sleman"],
+       [-7.781280429235443, 110.39311214687099, "SMA Kolese Debrito Depok"],
+       [-7.772431997424232, 110.4013271396907, "SMA Wahid Hasyim"],
+       [-7.779895870357495, 110.39217278124896, "SMA Olifant"],
+       [-7.772363693626756, 110.41260319174597, "SMA N 1 Depok"],
+       [-7.778182842289311, 110.44261254241776, "SMA Cahaya Bangsa Utama"],
+       [-7.770399485856432, 110.44508660638914, "SMA Masa Depan"],
+       [-7.744466434431611, 110.49055654146251, "SMAIT Baitussalam"],
+       [-7.762273712274108, 110.4704340370718, "SMA Muhammadiyah Kalasan"],
+       [-7.7599735717195335, 110.47902994146385, "SMA Imanuel Kalasan"],
+       [-7.757668779427828, 110.48360609658998, "SMA N 1 Kalasan"],
+       [-7.759088254823072, 110.48942268194547, "SMA 1 Prambanan"],
+       [-7.761775642570296, 110.49011607940112, "SMA Muhammadiyah 1 Prambanan"],
+       [-7.783207402360226, 110.48108052173066, "SMA N 1 Prambanan"],
+       [-7.7803330080440745, 110.48686494891656, "SMA MBS Sleman"],
+       [-7.645081440400082, 110.33282774330246, "SMK Ma'arif 2 Sleman"],
+       [-7.684928945493452, 110.3558339830948, "SMK Muhammadiyah 2 Turi"],
+       [-7.651082492645973, 110.36927680823469, "SMK Muhammadiyah 1 Turi"],
+       [-7.654187844185239, 110.37795102796181, "SMK Insan Cendekia"], 
+       [-7.663411611045235, 110.41438731970405, "SMK Muhammadiyah Sleman"],
+       [-7.664396311644828, 110.4165057948729, "SMK Kanisius 1 Sleman"],
+       [-7.666957054910747, 110.41219872796293, "SMK Hamong Putera 1 Pakem"],
+       [-7.660726914938437, 110.4109547794838, "SMK Hamong Putera 2 Pakem"],
+       [-7.6693228679641585, 110.41742802172897, "SMK Sanjaya Pakem"],
+       [-7.662454498650102, 110.44055106775305, "SMK N 1 Cangkringan"],
+       [-7.66552681628324, 110.46339864330406, "SMK Muhammadiyah Cangkringan"],
+       [-7.680469168385298, 110.45667641584026, "SMK Taman Karya Madya Ngemplak"],
+       [-7.657914795140964, 110.31964896775304, "SMK Muhammadiyah 1 Tempel"],
+       [-7.657764412431656, 110.32583851262055, "SMK N 1 Tempel"],
+       [-7.658253897048218, 110.32728499474078, "SMK Pembaharuan Indonesia Sleman"],
+       [-7.682243678880435, 110.2981828235767, "SMK Muhammadiyah 2 Tempel"],
+       [-7.720736102991767, 110.2678598235772, "SMK Muhammadiyah Minggir"],
+       [-7.760067994084374, 110.25707678379312, "SMK Muhammadiyah 1 Moyudan"], 
+       [-7.760126997215279, 110.25627731008392, "SMK Islam Moyudan"],
+       [-7.699991978800329, 110.30816373891838, "SMK Ma'arif 1 Sleman"],
+       [-7.712611310960703, 110.30641083707097, "SMK Muhammadiyah Seyegan"], 
+       [-7.732849260720571, 110.29911509658953, "SMK 17 Seyegan"],
+       [-7.730972541745613, 110.31673039289447, "SMK N 1 Seyegan"],
+       [-7.760102772388083, 110.29642579659, "SMK N 1 Godean"],
+       [-7.761964873186753, 110.2913259100839, "SMK N 2 Godean"],
+       [-7.679231942510021, 110.34060521793212, "SMK Muhammadiyah 2 Sleman"],
+       [-7.679846862932557, 110.35266568932677, "SMK Muhammadiyah 1 Sleman"],
+       [-7.7003232977625595, 110.34854635495316, "SMK YPKK 2 Sleman"],
+       [-7.7838434646107375, 110.32731947915492, "SMK YPKK 1 Sleman"],
+       [-7.763433421389719, 110.42239844255035, "SMK YPKK 3 Sleman"],
+       [-7.702925950705788, 110.34972358563628, "SMK Sulaiman Sleman"],
+       [-7.803933161771843, 110.3092316812493, "SMK Muhammadiyah Gamping"], 
+       [-7.800648860272172, 110.32761353707247, "SMK Putra Samodera"],
+       [-7.762929843094634, 110.33478341008397, "SMK Assalafiyah Sleman"],
+       [-7.768326715178046, 110.36717552542551, "SMK Dirgantara Putra Bangsa"],
+       [-7.763928526408005, 110.37038517029957, "SMK Kesehatan Binatama"],
+       [-7.723834993885779, 110.40363142357727, "SMK Bina Harapan"],
+       [-7.733629942339131, 110.39186906775417, "SMK YPNN Sleman"],
+       [-7.745873913797436, 110.38054613891903, "SMK Muhammadiyah Mlati"],
+       [-7.740212639551025, 110.39423050823602, "SMK Piri Sleman"],
+       [-7.783372575043929, 110.39251334146567, "SMK Karya Rini Sleman"],
+       [-7.77146941068777, 110.3925977083638, "SMK N 2 Depok"],
+       [-7.759064332399008, 110.41311517029916, "SMK PI Ambarukmo 1"],
+       [-7.790570906649974, 110.41285450823698, "SMK Penerbangan AAG Adisucipto"],
+       [-7.781069351345141, 110.41743206406002, "SMK Trisula 1 Depok"],
+       [-7.770818425457129, 110.41541448124877, "SMK Kesehatan Sadewa"],
+       [-7.765313122396947, 110.43083535056577, "SMK N 1 Depok"],
+       [-7.760184594140035, 110.43965465495779, "SMK Diponegoro Depok"],
+       [-7.804214261900226, 110.44071441008468, "SMK Muhammadiyah Berbah"],
+       [-7.792209568984624, 110.45721550098463, "SMK Yapemda 1 Sleman"],
+       [-7.790535066239901, 110.45753910823689, "SMK Nasional Berbah"],
+       [-7.758036120205803, 110.47279143707173, "SMK Muhammadiyah 1 Kalasan"],
+       [-7.75942479675438, 110.48217192542538, "SMK N 1 Kalasan"], 
+       [-7.758468041717147, 110.48388853908276, "SMK Muda Patria Sleman"],
+       [-7.758899254742429, 110.48957632612236, "SMK Sosial 1 Islam Prambanan"],
+       [-7.765480913812497, 110.48980080823658, "SMK Muhammadiyah Prambanan"],
+
+
+
+       
+
+     ];
+
+   // Loop untuk menambahkan marker pada titik-titik
+for (var i = 0; i < addressPoints.length; i++) {
+    var a = addressPoints[i];
+    var title1 = a[2];
+    var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title1 });
+
+    marker.bindPopup(title1);
+    marker.on('click', function (e) {
+        // Buat buffer saat marker di-klik
+        var markerCoords = e.target.getLatLng();
+        var turfPoint = turf.point([markerCoords.lng, markerCoords.lat]);
+        var buffered = turf.buffer(turfPoint, 5, { units: 'kilometers' });
+
+        // Konversi GeoJSON buffer ke layer Leaflet
+        var bufferedLayer = L.geoJSON(buffered);
+
+        // Tambahkan layer buffer ke peta
+        bufferedLayer.addTo(map);
+    });
+
+    markers.addLayer(marker);
+}
+
+// Menambahkan marker cluster ke peta
+map.addLayer(markers);
+
+
+
+
+
+
+
+
+
+
+
+   </script>
+  
+</body>
+</html>
